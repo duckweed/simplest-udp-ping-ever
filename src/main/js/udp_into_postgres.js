@@ -39,7 +39,7 @@ http.createServer(function (req, res) {
 
     res.write('hello');
 
-    fs.readFile('./hello.md', 'utf8', function(err, markdownFile){
+    fs.readFile('./hello.md', 'utf8', function(err, markdownFile ){
         var html = markdown.markdown.toHTML(markdownFile);
         console.log(html);
         res.write(html);
