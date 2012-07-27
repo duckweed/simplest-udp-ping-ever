@@ -1,11 +1,12 @@
 var conString = "tcp://postgres:5432@localhost/fitnesse_metrics_db";
-var helpHttpPort = 8080;
+var helpHttpPort = 8088;
 var metricsUdpPort = 42830;
 
 var http = require('http');
 var pg = require('pg');
 var markdown = require( "markdown" );
 
+var fs = require("fs");
 var dgram = require("dgram");
 var server = dgram.createSocket("udp4");
 
@@ -36,9 +37,15 @@ server.on("listening", function () {
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
 
-    var input = "# Fitnesse Metrics\n\nParagraph";
-    var output = "<html>" + markdown.markdown.toHTML( input ) + '</html>';
-    res.write( output );
+    res.write('hello');
+
+    fs.readFile('./hello.md', 'utf8', function(err, markdownFile){
+        var html = markdown.markdown.toHTML(markdownFile);
+        console.log(html);
+        res.write(html);
+    });
+
+    res.write('good bye');
     res.end();
 }).listen(helpHttpPort, '127.0.0.1');
 
@@ -48,6 +55,7 @@ server.bind(metricsUdpPort);
 function insert(msg) {
     return "insert into message values ('" + msg + "')";
 }
+
 
 function logMessage(msg, rinfo) {
     console.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
