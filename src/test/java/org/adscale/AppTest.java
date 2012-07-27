@@ -17,9 +17,9 @@ public class AppTest {
         DatagramSocket socket = null;
         try {
             InetAddress address = InetAddress.getByName("127.0.0.1");
-            int port = 43280;
+            int port = 42830;
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-            socket = new DatagramSocket(12345);
+            socket = new DatagramSocket(port);
             socket.send(packet);
         }
         finally {
