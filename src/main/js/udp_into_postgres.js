@@ -4,7 +4,7 @@ var metricsUdpPort = 42830;
 
 var http = require('http');
 var pg = require('pg');
-var markdown = require( "markdown" );
+var markdown = require("markdown");
 
 var fs = require("fs");
 var dgram = require("dgram");
@@ -35,18 +35,13 @@ server.on("listening", function () {
  */
 
 http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
+    var mdFile = fs.readFileSync('./hello.md', 'utf8');
+    var html = markdown.markdown.toHTML(mdFile);
 
-    res.write('hello');
-
-    fs.readFile('./hello.md', 'utf8', function(err, markdownFile ){
-        var html = markdown.markdown.toHTML(markdownFile);
-        console.log(html);
-        res.write(html);
-    });
-
-    res.write('good bye');
+    res.writeHead(200, {'Content-Type':'text/html'});
+    res.write(html);
     res.end();
+
 }).listen(helpHttpPort, '127.0.0.1');
 
 console.log('Server running at http://127.0.0.1:' + helpHttpPort);
@@ -55,7 +50,6 @@ server.bind(metricsUdpPort);
 function insert(msg) {
     return "insert into message values ('" + msg + "')";
 }
-
 
 function logMessage(msg, rinfo) {
     console.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
