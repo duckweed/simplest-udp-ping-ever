@@ -25,16 +25,16 @@ Command to create table
 -----------------------
 
 create table fitnesse_test (
-     id integer,
-     Test_name varchar(500),
-     run_time_in_millis integer,
-     run_date timestamp,
-     status varchar(4),
-     host varchar(40),
-     ip_address varchar(16),
-     branch varchar(40),
-     sha varchar(40),
-     run integer
+     id integer default -1,
+     test_name varchar(500),
+     run_time_in_millis integer default -1,
+     run_date timestamp default now(),
+     status varchar(4) default '    ',
+     host varchar(40) default '',
+     ip_address varchar(16) default '',
+     branch varchar(40) default '',
+     sha varchar(40) default '',
+     run integer default -1
 );
 
 Command to drop table

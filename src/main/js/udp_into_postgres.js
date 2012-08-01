@@ -16,9 +16,16 @@ var server = dgram.createSocket("udp4");
 server.on("message", function (msg, rinfo) {
     logMessage(msg, rinfo);
     pg.connect(conString, function (err, client) {
-        client.query(insert(msg), function (err, result) {
-            console.log("error: " + err);
-        });
+        var query = client.query(
+                {
+                    name: 'insert test',
+                    text: 'insert into fitnesse_test (test_name) values ($1)'
+                }, function (err, result){}
+        );
+        client.query({
+            name: 'insert test',
+            values: [msg]
+        })
     });
 });
 
@@ -33,7 +40,6 @@ server.on("listening", function () {
 /**
  * output help page
  */
-
 http.createServer(function (req, res) {
     var mdFile = fs.readFileSync('./hello.md', 'utf8');
     var html = markdown.markdown.toHTML(mdFile);
@@ -48,7 +54,7 @@ console.log('Server running at http://127.0.0.1:' + helpHttpPort);
 server.bind(metricsUdpPort);
 
 function insert(msg) {
-    return "insert into message values ('" + msg + "')";
+    return "insert into fitnesse_test (test_name) values ('" + msg + "')";
 }
 
 function logMessage(msg, rinfo) {
