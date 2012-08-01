@@ -16,23 +16,25 @@ var server = dgram.createSocket("udp4");
 server.on("message", function (msg, rinfo) {
     logMessage(msg, rinfo);
     pg.connect(conString, function (err, client) {
-        var query = client.query(
-                {
-                    name: 'insert test',
-                    text: 'insert into fitnesse_test (test_name) values ($1)'
-                }, function (err, result){}
-        );
-
+        var query = client.query({
+                    name:'insert test',
+                    text:'insert into fitnesse_test ('
+                            + 'id, test_name, run_time_in_millis, '
+                            + 'run_date, status, host, '
+                            + 'ip_address, branch, '
+                            + 'sha, run) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)' },
+                function (err, result) {
+                });
 
         console.log(msg);
 
         var parse = JSON.parse(msg);
         console.log(parse.msg);
 
-
         client.query({
-            name: 'insert test',
-            values: [parse.msg]
+            name:'insert test',
+            values:[parse.id, parse.test_name, parse.run_time, parse.run_date, parse.status, parse.host, parse.ip_address, parse.branch, parse.sha,
+                parse.run]
         })
     });
 });
@@ -60,10 +62,6 @@ http.createServer(function (req, res) {
 
 console.log('Server running at http://127.0.0.1:' + helpHttpPort);
 server.bind(metricsUdpPort);
-
-function insert(msg) {
-    return "insert into fitnesse_test (test_name) values ('" + msg + "')";
-}
 
 function logMessage(msg, rinfo) {
     console.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
