@@ -11,7 +11,7 @@ public class AppTest {
 
     @Test
     public void testApp() throws Exception {
-        String message = "\");  delete from fitnesse_test; " + new Date();
+        String message = "{\"msg\": \"hello\"}";
         byte[] buf = message.toString().getBytes();
 
         DatagramSocket socket = null;

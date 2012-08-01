@@ -22,9 +22,17 @@ server.on("message", function (msg, rinfo) {
                     text: 'insert into fitnesse_test (test_name) values ($1)'
                 }, function (err, result){}
         );
+
+
+        console.log(msg);
+
+        var parse = JSON.parse(msg);
+        console.log(parse.msg);
+
+
         client.query({
             name: 'insert test',
-            values: [msg]
+            values: [parse.msg]
         })
     });
 });
@@ -60,4 +68,3 @@ function insert(msg) {
 function logMessage(msg, rinfo) {
     console.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
 }
-
