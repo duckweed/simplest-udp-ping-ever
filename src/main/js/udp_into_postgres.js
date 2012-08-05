@@ -33,7 +33,7 @@ server.on("message", function (msg, rinfo) {
 
         client.query({
             name:'insert test',
-            values:[parse.id, parse.test_name, parse.run_time, parse.run_date, parse.status, parse.host, parse.ip_address, parse.branch, parse.sha,
+            values:[parse.id, parse.test_name, parse.run_time_in_millis, parse.run_date, parse.status, parse.host, parse.ip_address, parse.branch, parse.sha,
                 parse.run]
         })
     });

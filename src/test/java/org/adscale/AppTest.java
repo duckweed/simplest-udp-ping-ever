@@ -2,6 +2,7 @@ package org.adscale;
 
 import org.junit.Test;
 
+import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -9,6 +10,12 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class AppTest {
+
+    //TODO: add branch
+    //TODO: add SHA
+    //TODO: host
+    //TODO: ip_address
+
 
     @Test
     public void testApp() throws Exception {
@@ -18,7 +25,7 @@ public class AppTest {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("id", 1);
         map.put("test_name", "somename");
-        map.put("run_time_in_millis", 1112000);
+        map.put("run_time_in_millis", 2300);
         map.put("run_date", new Date());
         map.put("status", "PASS");
         map.put("host", "imac33");
@@ -38,10 +45,7 @@ public class AppTest {
 
         System.out.println("message = " + message);
 
-
-
-//        String message = "{\"msg\": \"hello\"}";
-
+        //        String message = "{\"msg\": \"hello\"}";
 
         byte[] buf = message.toString().getBytes();
 
@@ -58,4 +62,15 @@ public class AppTest {
             socket.close();
         }
     }
+
+    @Test
+    public void testGetBranchName() throws Exception {
+        String cmd = "git";
+        String[] s = {"branch"};
+        Process process = Runtime.getRuntime().exec(cmd, s);
+        process.wait(1000);
+        InputStream is = process.getInputStream();
+        System.out.println("is = " + is);
+    }
+
 }
